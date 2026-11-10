@@ -1,0 +1,36 @@
+name: reflexes
+version: "0.2.0"
+description: >-
+  Start a Hermes turn when something happens on this computer. Arm a reflex on a folder
+  ("when a PDF lands in Downloads, file it"), a drive ("when I plug in my camera card, import it")
+  or a log file ("when build.log gets an ERROR, find out why") and Hermes acts in the chat that
+  armed it, with its normal tools and approvals, without you typing anything.
+author: zahmed333
+license: MIT
+manifest_version: 2
+requires_hermes: ">=0.22.0"
+tags: [automation, triggers, files, folders, drives, usb, logs, events]
+provides_tools:
+  - reflex_add
+  - reflex_manage
+provides_hooks:
+  - pre_tool_call
+  - post_tool_call
+  - pre_llm_call
+config_schema:
+  poll_interval:
+    type: float
+    default: 1.0
+    description: Seconds between looks at watched folders, drives and log files.
+  event_ttl_seconds:
+    type: int
+    default: 900
+    description: How long a firing waits for its chat to be open before it is recorded as missed.
+  max_fires_per_hour:
+    type: int
+    default: 30
+    description: A reflex that fires more often than this in an hour pauses itself (loop protection).
+  approve_new_reflexes:
+    type: bool
+    default: true
+    description: Ask before the model arms a reflex. Reflexes you add with /reflex never ask.
