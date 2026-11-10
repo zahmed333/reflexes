@@ -1,5 +1,5 @@
 name: reflexes
-version: "0.2.0"
+version: "0.2.1"
 description: >-
   Start a Hermes turn when something happens on this computer. Arm a reflex on a folder
   ("when a PDF lands in Downloads, file it"), a drive ("when I plug in my camera card, import it")
@@ -8,7 +8,7 @@ description: >-
 author: zahmed333
 license: MIT
 manifest_version: 2
-requires_hermes: ">=0.22.0"
+requires_hermes: ">=0.22.6"
 tags: [automation, triggers, files, folders, drives, usb, logs, events]
 provides_tools:
   - reflex_add

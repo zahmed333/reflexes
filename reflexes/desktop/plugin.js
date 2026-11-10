@@ -19,8 +19,17 @@ const muted = { color: 'var(--ui-text-tertiary)' }
 const secondary = { color: 'var(--ui-text-secondary)' }
 const card = { border: '1px solid var(--ui-stroke-secondary)', borderRadius: 8, padding: 12 }
 const row = { display: 'flex', alignItems: 'center', gap: 8 }
-const label = { ...muted, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 4 }
+const label = { ...muted, fontSize: 10.5, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 4 }
 const mono = { fontFamily: 'var(--font-mono, ui-monospace, monospace)', fontSize: 12, overflowWrap: 'anywhere' }
+
+// The mark: a pixel eye (a sense). Solid cells in currentColor, the pupil in the theme accent.
+function Mark({ size }) {
+  return jsxs('svg', { width: Math.round(size * 13 / 9), height: size, viewBox: '0 0 13 9', 'aria-hidden': true,
+    shapeRendering: 'crispEdges', style: { flexShrink: 0 }, children: [
+    jsx('path', { d: 'M4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM7 0h1v1h-1zM8 0h1v1h-1zM2 1h1v1h-1zM3 1h1v1h-1zM4 1h1v1h-1zM5 1h1v1h-1zM6 1h1v1h-1zM7 1h1v1h-1zM8 1h1v1h-1zM9 1h1v1h-1zM10 1h1v1h-1zM1 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM9 2h1v1h-1zM10 2h1v1h-1zM11 2h1v1h-1zM0 3h1v1h-1zM1 3h1v1h-1zM2 3h1v1h-1zM10 3h1v1h-1zM11 3h1v1h-1zM12 3h1v1h-1zM0 4h1v1h-1zM1 4h1v1h-1zM11 4h1v1h-1zM12 4h1v1h-1zM0 5h1v1h-1zM1 5h1v1h-1zM2 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM9 6h1v1h-1zM10 6h1v1h-1zM11 6h1v1h-1zM2 7h1v1h-1zM3 7h1v1h-1zM4 7h1v1h-1zM5 7h1v1h-1zM6 7h1v1h-1zM7 7h1v1h-1zM8 7h1v1h-1zM9 7h1v1h-1zM10 7h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM8 8h1v1h-1z', fill: 'currentColor' }),
+    jsx('path', { d: 'M5 3h1v1h-1zM6 3h1v1h-1zM7 3h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM7 4h1v1h-1zM5 5h1v1h-1zM6 5h1v1h-1zM7 5h1v1h-1z', fill: 'var(--ui-accent)' })
+  ] })
+}
 
 const refresh = () => queryClient.invalidateQueries({ queryKey: STATE_KEY })
 const errorText = e => String((e && (e.detail || e.message)) || e || 'Something went wrong')
@@ -263,7 +272,10 @@ function ReflexesPage() {
   return jsx('div', { style: { height: '100%', overflowY: 'auto' }, children:
     jsxs('div', { style: { maxWidth: 820, margin: '0 auto', padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }, children: [
       jsxs('div', { children: [
-        jsx('div', { style: { fontSize: 20, fontWeight: 600 }, children: 'Reflexes' }),
+        jsxs('div', { style: { ...row, gap: 10 }, children: [
+          jsx(Mark, { size: 24 }),
+          jsx('div', { style: { fontSize: 20, fontWeight: 600 }, children: 'Reflexes' })
+        ] }),
         jsx('div', { style: { ...secondary, fontSize: 13 }, children: 'Hermes starts a turn by itself when something happens on this computer: a file appears, a drive is connected, or a log line shows up.' })
       ] }),
       body
@@ -275,10 +287,10 @@ function Chip() {
   const pulse = useValue($pulse)
   const armed = data && data.rules ? data.rules.filter(r => r.enabled).length : 0
   const flashing = pulse > 0 && Date.now() - pulse < 4000
-  return jsx('button', {
+  return jsxs('button', {
     type: 'button', title: 'Reflexes', onClick: () => host.navigate(ROUTE),
-    style: { padding: '0 6px', fontSize: 11, color: flashing || (data && data.problem) ? 'var(--ui-accent)' : 'var(--ui-text-tertiary)' },
-    children: `⚡ ${armed}`
+    style: { padding: '0 6px', fontSize: 11, display: 'inline-flex', alignItems: 'center', gap: 5, color: flashing || (data && data.problem) ? 'var(--ui-accent)' : 'var(--ui-text-tertiary)' },
+    children: [jsx(Mark, { size: 14 }), jsx('span', { children: String(armed) })]
   })
 }
 
@@ -289,7 +301,7 @@ export default {
     api = ctx
     ctx.registerMany([
       { id: 'page', area: ROUTES_AREA, data: { path: ROUTE }, render: () => jsx(ReflexesPage, {}) },
-      { id: 'nav', area: SIDEBAR_NAV_AREA, data: { path: ROUTE, label: 'Reflexes', codicon: 'zap' } },
+      { id: 'nav', area: SIDEBAR_NAV_AREA, data: { path: ROUTE, label: 'Reflexes', codicon: 'eye' } },
       { id: 'chip', area: STATUSBAR_AREAS.right, order: 125, render: () => jsx(Chip, {}) }
     ])
     ctx.onEvent(`plugin.${ID}.fired`, event => {

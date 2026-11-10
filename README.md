@@ -1,8 +1,9 @@
+<p align="center"><img src="reflexes/docs/banner.svg" alt="Reflexes. Senses for your computer." width="100%"></p>
+<!-- demo.gif here -->
+
 # Reflexes
 
 Reflexes gives Hermes senses for your computer: when something happens, Hermes starts a turn in your own chat and acts with its normal tools and approvals. Nobody types anything.
-
-<!-- demo.gif here -->
 
 ```
 /reflex add ~/Downloads *.pdf :: Each new file is a receipt. Rename it to date_vendor_amount.pdf,
@@ -72,9 +73,9 @@ hermes plugins install reflexes
 hermes config set plugins.entries.reflexes.allow_gateway_injection true
 ```
 
-Hermes lets a plugin start turns only after you allow it, per plugin; the second command is that permission. Until you set it, reflexes are detected and logged but not delivered.
+Hermes lets a plugin start turns in the gateway, the TUI and Desktop only after you allow it, per plugin; the second command is that permission. Until you set it, reflexes for those chats are detected and logged but not delivered.
 
-Turns show live in Hermes Desktop, `hermes --tui` and messaging chats. The classic `hermes chat` terminal runs them without displaying them.
+Turns show live in Hermes Desktop, `hermes --tui` and messaging chats. A reflex armed in the classic `hermes chat` terminal runs there without that permission and without being displayed.
 
 Reflexes run only while Hermes runs.
 
@@ -117,7 +118,7 @@ hermes plugins doctor ./reflexes --ci
 hermes plugins validate ./reflexes --install-deps
 ```
 
-Tested live end to end on Windows 11 with Hermes 0.22.6 and 0.23.1. The macOS and Linux code paths are covered by unit tests only. Requires Hermes 0.22.0 or later.
+Tested live end to end on Windows 11 with Hermes 0.22.6 and 0.23.1. The macOS and Linux code paths are covered by unit tests only. Requires Hermes 0.22.6 or later.
 
 ## Licence
 
